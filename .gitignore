@@ -1,0 +1,23 @@
+# Python bytecode / cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Checkpoints and big artifacts
+checkpoints/
+
+# Outputs (keep only what we explicitly track)
+outputs/
+!outputs/dataset_stats.json
+
+# IDE / OS files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

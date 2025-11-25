@@ -1,0 +1,10 @@
+torch           # or install GPU build separately if you have CUDA
+transformers>=4.44
+datasets>=3.0
+evaluate>=0.4
+scikit-learn>=1.4
+numpy>=1.26
+pandas>=2.0
+matplotlib>=3.8
+accelerate>=0.33
+tqdm
