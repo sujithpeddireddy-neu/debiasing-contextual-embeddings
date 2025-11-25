@@ -1,4 +1,4 @@
-torch           # or install GPU build separately if you have CUDA
+torch
 transformers>=4.44
 datasets>=3.0
 evaluate>=0.4
