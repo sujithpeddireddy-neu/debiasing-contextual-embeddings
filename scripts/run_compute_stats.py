@@ -16,7 +16,6 @@ def main():
     sst_stats = sst2_stats()
     print(json.dumps(sst_stats, indent=2, sort_keys=True))
 
-    # Optionally dump to a JSON file for later use in the writeup
     out_dir = Path("outputs")
     out_dir.mkdir(exist_ok=True)
     with open(out_dir / "dataset_stats.json", "w", encoding="utf-8") as f:
