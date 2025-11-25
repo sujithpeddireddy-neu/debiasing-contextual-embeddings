@@ -2,7 +2,7 @@ from src.baseline_sst2 import train_sst2_baseline
 
 
 def main():
-    # For a QUICK sanity check, uncomment these:
+    # sanity check:
     # metrics = train_sst2_baseline(max_train_samples=2000, max_eval_samples=1000)
 
     # For a proper baseline, use full data:
