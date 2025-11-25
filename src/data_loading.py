@@ -46,8 +46,6 @@ def load_crows_pairs() -> Dataset:
 
     df = pd.read_csv(url)
 
-    # Make sure columns are what we expect
-    # (CrowS-Pairs CSV already uses these names.)
     expected_cols = {"sent_more", "sent_less", "stereo_antistereo", "bias_type"}
     missing = expected_cols - set(df.columns)
     if missing:
