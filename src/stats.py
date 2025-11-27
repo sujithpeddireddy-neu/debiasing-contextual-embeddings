@@ -6,7 +6,7 @@ from datasets import Dataset, DatasetDict
 from .data_loading import load_stereoset, load_crows_pairs, load_sst2
 
 def _avg_token_length(texts) -> float:
-    # Very simple whitespace tokenization for rough stats
+    # simple whitespace tokenization for rough stats
     total_tokens = 0
     for t in texts:
         total_tokens += len(str(t).split())
@@ -16,13 +16,6 @@ def _avg_token_length(texts) -> float:
 def stereoset_stats() -> Dict[str, Any]:
     """
     Compute basic stats for StereoSet (per subset).
-
-    Returns:
-        {
-          "intrasentence": {...},
-          "intersentence": {...},
-          "overall": {...}
-        }
     """
     stats: Dict[str, Any] = {}
     stereo_all = load_stereoset("all")
@@ -39,9 +32,8 @@ def stereoset_stats() -> Dict[str, Any]:
         # bias_type is one of {gender, race, religion, profession}
         bias_counts = Counter(ds["bias_type"])
 
-        # context is the prompt; sentences is the candidate completions
         avg_context_len = _avg_token_length(ds["context"])
-        # Flatten sentences list-of-lists into individual sentence strings
+        # Flatten sentences into individual sentence strings
         all_sentences = [s for seq in ds["sentences"] for s in seq["sentence"]]
         avg_sentence_len = _avg_token_length(all_sentences)
 
@@ -65,15 +57,6 @@ def stereoset_stats() -> Dict[str, Any]:
 def crows_pairs_stats() -> Dict[str, Any]:
     """
     Compute basic stats for CrowS-Pairs.
-
-    Returns:
-        {
-          "num_examples": int,
-          "bias_type_counts": {...},
-          "stereo_vs_antistereo": {...},
-          "avg_sent_more_len_tokens": float,
-          "avg_sent_less_len_tokens": float,
-        }
     """
     ds = load_crows_pairs()
 
@@ -96,14 +79,6 @@ def crows_pairs_stats() -> Dict[str, Any]:
 def sst2_stats() -> Dict[str, Any]:
     """
     Compute basic stats for SST-2 (GLUE).
-
-    Returns:
-        {
-          "train": {...},
-          "validation": {...},
-          "test": {...},
-          "label_names": [...],
-        }
     """
     ds_dict = load_sst2()
     assert isinstance(ds_dict, DatasetDict)
