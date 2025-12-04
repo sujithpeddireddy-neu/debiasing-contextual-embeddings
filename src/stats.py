@@ -3,7 +3,7 @@ from typing import Dict, Any
 
 from datasets import Dataset, DatasetDict
 
-from .data_loading import load_stereoset, load_crows_pairs, load_sst2
+from data_loading import load_stereoset, load_crows_pairs, load_sst2
 
 def _avg_token_length(texts) -> float:
     # simple whitespace tokenization for rough stats

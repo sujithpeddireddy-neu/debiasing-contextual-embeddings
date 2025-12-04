@@ -94,7 +94,6 @@ def evaluate_crows_pairs_inlp(model_name="bert-base-uncased"):
         "anti_stereotype_percentage": anti_percentage,
         "total_examples": total,
     }
-
-
+    
 if __name__ == "__main__":
     evaluate_crows_pairs_inlp()
