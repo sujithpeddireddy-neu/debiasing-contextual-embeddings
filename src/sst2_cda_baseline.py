@@ -7,7 +7,7 @@ from transformers import (
     TrainingArguments,
     Trainer,
 )
-from .cda_utils import swap_gender_terms
+from cda_utils import swap_gender_terms
 
 
 def build_cda_sst2_train(max_train_samples: Optional[int] = None) -> Dataset:
