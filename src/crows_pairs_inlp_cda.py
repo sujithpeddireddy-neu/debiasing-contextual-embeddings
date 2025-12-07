@@ -34,7 +34,7 @@ def add_inlp_hook(model, P, info):
         return X_proj_t
 
     # Register hook on the base BERT model
-    handle = model.bert.register_forward_hook(hook)
+    handle = model.bert.embeddings.register_forward_hook(hook)
     return handle
 
 
