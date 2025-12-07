@@ -7,7 +7,8 @@ from transformers import (
     TrainingArguments,
     Trainer,
 )
-from cda_utils import swap_gender_terms
+from .cda_utils import swap_gender_terms
+from pathlib import Path
 
 
 def build_cda_sst2_train(max_train_samples: Optional[int] = None) -> Dataset:
@@ -58,6 +59,7 @@ def train_sst2_cda_baseline(
     Fine-tune bert-base-uncased on CDA-augmented SST-2.
     Returns the evaluation metrics dict.
     """
+
     raw = load_dataset("glue", "sst2")
 
     # Build CDA-augmented train set
@@ -80,9 +82,22 @@ def train_sst2_cda_baseline(
         remove_columns=["sentence"],
     )
 
-    model = AutoModelForSequenceClassification.from_pretrained(
-        "bert-base-uncased", num_labels=2
-    )
+    # resume-from-checkpoint logic
+    checkpoint_dir = Path(output_dir) / "checkpoint-5000"
+    if checkpoint_dir.exists():
+        print(f"[CDA] Resuming model from checkpoint: {checkpoint_dir}")
+        model = AutoModelForSequenceClassification.from_pretrained(
+            str(checkpoint_dir),
+            num_labels=2,
+        )
+        resume_ckpt = str(checkpoint_dir)
+    else:
+        print("[CDA] No checkpoint found, starting from bert-base-uncased")
+        model = AutoModelForSequenceClassification.from_pretrained(
+            "bert-base-uncased",
+            num_labels=2,
+        )
+        resume_ckpt = None
 
     training_args = TrainingArguments(
     output_dir=output_dir,
@@ -111,6 +126,10 @@ def train_sst2_cda_baseline(
         compute_metrics=compute_metrics,
     )
 
-    trainer.train()
+    if resume_ckpt is not None:
+        trainer.train(resume_from_checkpoint=resume_ckpt)
+    else:
+        trainer.train()
+
     metrics = trainer.evaluate()
     return metrics

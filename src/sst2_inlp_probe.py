@@ -8,7 +8,6 @@ from sklearn.metrics import accuracy_score, f1_score
 
 from src.inlp import extract_cls_embeddings, load_projection, apply_projection
 
-
 def get_sst2_split_embeddings(
     model_name: str = "bert-base-uncased",
     split: str = "train[:10000]",
