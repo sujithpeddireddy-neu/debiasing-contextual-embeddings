@@ -1,11 +1,10 @@
-# scripts/run_stereoset_inlp.py
 """
 Evaluate BERT-base + INLP on StereoSet using the official-style PLL metrics.
 
 This script:
   - loads the StereoSet validation splits (intrasentence + intersentence),
   - wraps BertForMaskedLM with an INLP projection applied to hidden states,
-  - computes pseudo-log-likelihood (PLL) for stereotype/anti/unrelated sentences,
+  - computes pseudo-log-likelihood for stereotype/anti/unrelated sentences,
   - computes SSS, LMS, ICAT for each subset and the combined score.
 """
 
@@ -39,7 +38,6 @@ def extract_S_A_U(ex):
     Extract stereotype (S), anti-stereotype (A), and unrelated (U) sentences
     from a StereoSet example.
     """
-    # HF version sometimes stores as a dict-of-lists:
     if isinstance(ex["sentences"], dict):
         s = a = u = None
         for sent, label in zip(ex["sentences"]["sentence"], ex["sentences"]["gold_label"]):
@@ -216,10 +214,7 @@ def evaluate_stereoset_inlp(
     max_examples: Optional[int] = None,
 ) -> Dict[str, Any]:
     """
-    Full evaluation:
-      - load intrasentence + intersentence,
-      - run PLL scoring with INLP,
-      - compute StereoSet metrics for each + combined.
+    Full evaluation
     """
     ds = load_stereoset("all")
     inlp_mlm = INLPBertForMaskedLM("bert-base-uncased", proj_path=proj_path)
@@ -262,7 +257,6 @@ def evaluate_stereoset_inlp(
 
 
 if __name__ == "__main__":
-    # Set max_examples to 100 for a quick run, or None for full StereoSet
     evaluate_stereoset_inlp(
         proj_path="checkpoints/inlp_projection.joblib",
         max_examples=None,
