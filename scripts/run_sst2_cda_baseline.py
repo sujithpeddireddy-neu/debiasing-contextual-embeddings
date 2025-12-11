@@ -1,5 +1,7 @@
+"""
+Entry point for training the CDA-based SST-2 baseline model.
+"""
 from src.sst2_cda_baseline import train_sst2_cda_baseline
-
 
 def main():
     metrics = train_sst2_cda_baseline(
