@@ -4,6 +4,7 @@ from pathlib import Path
 from src.stats import stereoset_stats, crows_pairs_stats, sst2_stats
 
 def main():
+    """Show the stats of the different datasets in prettyprint."""
     print("=== StereoSet stats ===")
     ss_stats = stereoset_stats()
     print(json.dumps(ss_stats, indent=2, sort_keys=True))
