@@ -29,6 +29,7 @@ def train_sst2_baseline(
     # 1) Load raw GLUE SST-2 dataset 
     raw_datasets = load_dataset("glue", "sst2")
 
+    # Tokenizer used to convert raw sentences into BERT input IDs / attention masks.
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
 
     def preprocess(examples):
@@ -47,9 +48,11 @@ def train_sst2_baseline(
 
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 
+    # We use accuracy + weighted F1 as the main SST-2 evaluation metrics
     accuracy_metric = evaluate.load("accuracy")
     f1_metric = evaluate.load("f1")
 
+    # HF `Trainer` callback: convert logits to labels and compute accuracy/F1
     def compute_metrics(eval_pred):
         logits, labels = eval_pred
         preds = np.argmax(logits, axis=-1)
@@ -61,11 +64,13 @@ def train_sst2_baseline(
         )["f1"]
         return metrics
 
+    # BERT-based classifier head for binary sentiment (0: negative, 1: positive).
     model = AutoModelForSequenceClassification.from_pretrained(
         model_name,
         num_labels=2,
     )
 
+    # HuggingFace training configuration.
     training_args = TrainingArguments(
         output_dir=output_dir,
         learning_rate=2e-5,
@@ -75,7 +80,7 @@ def train_sst2_baseline(
         logging_steps=50,
     )
 
-
+    # Trainer wraps the full training loop: forward, loss, optimizer, evaluation, checkpointing.
     trainer = Trainer(
         model=model,
         args=training_args,
