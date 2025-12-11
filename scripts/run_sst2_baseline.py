@@ -1,5 +1,8 @@
-from src.baseline_sst2 import train_sst2_baseline
+"""
+Small wrapper around src.baseline_sst2.train_sst2_baseline.
+"""
 
+from src.baseline_sst2 import train_sst2_baseline
 
 def main():
     # sanity check:
