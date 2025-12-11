@@ -54,7 +54,7 @@ def main():
     out_dir = Path("outputs")
     out_dir.mkdir(exist_ok=True)
 
-    # 1. Grab a pool of sentences (same idea as in non-CDA version)
+    # 1. Grab a pool of sentences
     print("Loading SST-2 training subset for pronoun probe ...")
     glue_train = load_dataset("glue", "sst2", split="train[:5000]")  # 5k for speed
     texts = list(glue_train["sentence"])
@@ -121,7 +121,7 @@ def main():
         f"F1-weighted (projected): {metrics_proj['f1_weighted']:.4f}"
     )
 
-    # 7. Save everything to JSON for the report
+    # 7. Save everything to JSON.
     results = {
         "model": cda_model_name,
         "n_examples": int(len(selected_texts)),
