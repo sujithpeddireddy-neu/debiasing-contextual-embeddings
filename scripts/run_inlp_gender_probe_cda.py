@@ -1,3 +1,10 @@
+"""
+Variant of the pronoun-gender INLP experiment run on the
+CDA-finetuned SST-2 model instead of vanilla BERT.
+This lets us compare “debiasing in original BERT space” versus
+“debiasing in CDA space”.
+"""
+
 from pathlib import Path
 import json
 
