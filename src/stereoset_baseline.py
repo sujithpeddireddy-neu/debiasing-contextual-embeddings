@@ -106,13 +106,13 @@ def evaluate_subset_official(data, max_examples=None):
             if pll_u != float("-inf"):
                 PLL_U.append(pll_u)
 
-    # Compute means
+
     μS = mean(PLL_S) if PLL_S else 0
     μA = mean(PLL_A) if PLL_A else 0
     μU = mean(PLL_U) if PLL_U else 0
     μM = mean(PLL_S + PLL_A) if (PLL_S or PLL_A) else 0
 
-    # Official StereoSet metrics
+
     if μS + μA == 0:
         SSS = 0
     else:

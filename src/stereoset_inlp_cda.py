@@ -197,7 +197,6 @@ def pll_inlp(sentence):
     mask = enc["attention_mask"][0].to(device)
     outputs = model.bert(ids.unsqueeze(0), attention_mask=mask.unsqueeze(0)).last_hidden_state
 
-    # Apply P to hidden states
     hidden = outputs @ P
 
     total, count = 0, 0

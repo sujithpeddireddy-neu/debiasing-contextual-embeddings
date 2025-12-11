@@ -32,7 +32,6 @@ def build_cda_sst2_train(max_train_samples: Optional[int] = None) -> Dataset:
         orig_labels.append(y)
 
         swapped = swap_gender_terms(s)
-        # Only add if something actually changed
         if swapped != s:
             orig_texts.append(swapped)
             orig_labels.append(y)
@@ -62,7 +61,6 @@ def train_sst2_cda_baseline(
 
     raw = load_dataset("glue", "sst2")
 
-    # Build CDA-augmented train set
     train_dataset = build_cda_sst2_train(max_train_samples=max_train_samples)
 
     eval_dataset = raw["validation"]
@@ -82,7 +80,6 @@ def train_sst2_cda_baseline(
         remove_columns=["sentence"],
     )
 
-    # resume-from-checkpoint logic
     checkpoint_dir = Path(output_dir) / "checkpoint-5000"
     if checkpoint_dir.exists():
         print(f"[CDA] Resuming model from checkpoint: {checkpoint_dir}")

@@ -29,11 +29,9 @@ def stereoset_stats() -> Dict[str, Any]:
         n = len(ds)
         total_examples += n
 
-        # bias_type is one of {gender, race, religion, profession}
         bias_counts = Counter(ds["bias_type"])
 
         avg_context_len = _avg_token_length(ds["context"])
-        # Flatten sentences into individual sentence strings
         all_sentences = [s for seq in ds["sentences"] for s in seq["sentence"]]
         avg_sentence_len = _avg_token_length(all_sentences)
 
@@ -93,8 +91,6 @@ def sst2_stats() -> Dict[str, Any]:
         label_counts = Counter(labels)
 
         avg_sentence_len = _avg_token_length(ds["sentence"])
-
-        # Map integer labels to human-readable class names
         label_counts_named = {label_names[k]: v for k, v in label_counts.items()}
 
         split_stats[split] = {

@@ -86,15 +86,6 @@ def build_pronoun_gender_dataset(
     female_pronouns: Optional[set] = None,
     ignore_ambiguous: bool = True,
 ) -> Tuple[List[str], np.ndarray]:
-    """
-    Very simple heuristic builder: label sentence as male (0) if it contains any male pronoun,
-    female (1) if it contains female pronoun(s). If both appear or none appear, it's ambiguous and skipped
-    (unless ignore_ambiguous=False in which case those are labeled -1).
-
-    Returns:
-        selected_texts: list of texts that received a label
-        y: numpy array of labels (0 for male, 1 for female)
-    """
     male_pronouns = male_pronouns or DEFAULT_MALE_PRONOUNS
     female_pronouns = female_pronouns or DEFAULT_FEMALE_PRONOUNS
 
@@ -121,10 +112,6 @@ def build_pronoun_gender_dataset(
     return selected, np.array(labels)
 
 def orthonormalize_rows(W: np.ndarray) -> np.ndarray:
-    """
-    Given matrix W (k x d) whose rows are vectors, return an orthonormal basis Q (d x k)
-    via QR on W^T. The columns of Q are an orthonormal basis for span(W).
-    """
     if W.size == 0:
         return np.zeros((W.shape[1], 0))
     Q, _ = np.linalg.qr(W.T)
@@ -141,20 +128,6 @@ def learn_inlp_projection(
     random_state: int = 0,
     verbose: bool = True,
 ) -> Tuple[np.ndarray, Dict[str, Any]]:
-    """
-    Learn INLP projection matrix P (d x d) that removes linear gender directions.
-
-    Args:
-      X: (N, d) embedding matrix (float),
-      y: (N,) integer labels (binary: 0/1).
-      n_iters: number of INLP iterations (typical 10-20).
-      clf_* : logistic regression hyperparams.
-
-    Returns:
-      P: projection matrix (d x d), so that X_projected = X @ P
-      info: dict with metadata (weights list, explained variance etc.)
-    """
-    # Basic checks
     assert X.ndim == 2, "X should be (N, d)"
     N, d = X.shape
     assert y.shape[0] == N, "y must have same first dimension as X"
@@ -187,15 +160,6 @@ def learn_inlp_projection(
 
 
 def apply_projection(X: np.ndarray, P: np.ndarray, scaler_mean: Optional[np.ndarray] = None, scaler_scale: Optional[np.ndarray] = None) -> np.ndarray:
-    """
-    Apply INLP projection P to X. If P was learned on standardized data,
-    pass scaler_mean and scaler_scale (returned in info) so the appropriate transform is done.
-
-    Steps:
-      Xz = (X - mean) / scale
-      Xz_proj = Xz @ P
-      (returns Xz_proj as numpy array)
-    """
     if scaler_mean is not None and scaler_scale is not None:
         Xz = (X - scaler_mean) / (scaler_scale + 1e-12)
         return Xz @ P

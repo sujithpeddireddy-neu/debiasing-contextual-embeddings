@@ -5,17 +5,11 @@ from statistics import mean
 from cda_utils import swap_gender_terms
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-
-###############################################
-# Load BERT MLM model
-###############################################
 tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
 model = AutoModelForMaskedLM.from_pretrained("bert-base-uncased").to(device)
 model.eval()
 
-###############################################
-# PLL computation
-###############################################
+
 def sentence_pll(sentence):
     encoding = tokenizer(sentence, return_tensors="pt", truncation=True, max_length=512)
     input_ids = encoding["input_ids"][0].to(device)
@@ -43,9 +37,7 @@ def sentence_pll(sentence):
 
     return pll_sum if count > 0 else float("-inf")
 
-###############################################
-# Extract S / A / U and apply CDA
-###############################################
+
 def extract_sau_cda(example):
     S = A = U = None
 
@@ -62,9 +54,7 @@ def extract_sau_cda(example):
 
     return S, A, U
 
-###############################################
-# Evaluate split
-###############################################
+
 def evaluate_split(dataset, max_examples=None):
     PLL_S, PLL_A, PLL_U = [], [], []
 
@@ -97,9 +87,7 @@ def evaluate_split(dataset, max_examples=None):
         "num_S": len(PLL_S)
     }
 
-###############################################
-# Main StereoSet Evaluation (CDA version)
-###############################################
+
 def evaluate_stereoset_cda(max_examples=None):
     intra = load_dataset("McGill-NLP/stereoset", "intrasentence", split="validation")
     inter = load_dataset("McGill-NLP/stereoset", "intersentence", split="validation")

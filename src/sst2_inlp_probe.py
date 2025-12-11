@@ -80,7 +80,6 @@ def main(
     import json
     import os
 
-    # --------- Step 1: embeddings (unmodified BERT) ----------
     X_train, y_train = get_sst2_split_embeddings(
         model_name=model_name,
         split=train_split,
@@ -92,7 +91,6 @@ def main(
         batch_size=batch_size,
     )
 
-    # --------- Step 2: baseline probe ----------
     print("\n=== Training baseline probe on ORIGINAL embeddings ===")
     baseline_metrics = train_logreg_probe(X_train, y_train, X_val, y_val)
     print(
@@ -101,12 +99,12 @@ def main(
         f"F1-weighted: {baseline_metrics['f1_weighted']:.4f}"
     )
 
-    # --------- Step 3: load INLP projection ----------
+
     print(f"\nLoading INLP projection from {projection_path} ...")
     P, info = load_projection(projection_path)
     print("Projection shape:", P.shape, "| iters used:", info.get("n_iters", "N/A"))
 
-    # --------- Step 4: apply projection ----------
+
     print("Applying INLP projection to train/val embeddings ...")
     X_train_proj = apply_projection(
         X_train,
@@ -121,7 +119,7 @@ def main(
         scaler_scale=info.get("scaler_scale"),
     )
 
-    # --------- Step 5: probe after INLP ----------
+
     print("\n=== Training probe on INLP-PROJECTED embeddings ===")
     inlp_metrics = train_logreg_probe(X_train_proj, y_train, X_val_proj, y_val)
     print(
@@ -130,7 +128,7 @@ def main(
         f"F1-weighted: {inlp_metrics['f1_weighted']:.4f}"
     )
 
-    # --------- Step 6: save everything ----------
+
     results = {
         "model": model_name,
         "train_split": train_split,
