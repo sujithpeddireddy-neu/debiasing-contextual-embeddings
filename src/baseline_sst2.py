@@ -1,3 +1,6 @@
+"""
+Train a vanilla BERT sentiment classifier on SST-2.
+"""
 from typing import Optional, Dict, Any
 
 import numpy as np
@@ -19,10 +22,11 @@ def train_sst2_baseline(
     max_eval_samples: Optional[int] = None,
 ) -> Dict[str, Any]:
     """
-    Fine-tune a BERT-base model on SST-2.
+    Fine-tune a BERT-base modelon SST-2.
     Returns:
         A dict of evaluation metrics on the SST-2 validation set.
     """
+    # 1) Load raw GLUE SST-2 dataset 
     raw_datasets = load_dataset("glue", "sst2")
 
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
@@ -36,6 +40,7 @@ def train_sst2_baseline(
     eval_dataset = encoded["validation"]
 
     if max_train_samples is not None:
+        # Optionally subsample training examples for quick experiments
         train_dataset = train_dataset.select(range(min(max_train_samples, len(train_dataset))))
     if max_eval_samples is not None:
         eval_dataset = eval_dataset.select(range(min(max_eval_samples, len(eval_dataset))))
