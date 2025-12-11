@@ -1,3 +1,6 @@
+"""
+CDA helper: swaps gendered words in a sentence.
+"""
 import re
 
 _GENDER_SWAP = {
@@ -30,7 +33,7 @@ _GENDER_SWAP = {
 def swap_gender_terms(text: str) -> str:
     """
     Perform simple Counterfactual Data Augmentation by swapping
-    gendered words using _GENDER_SWAP. Case is preserved.
+    gendered words. Case is preserved.
     """
     def repl(match: re.Match) -> str:
         word = match.group(0)
