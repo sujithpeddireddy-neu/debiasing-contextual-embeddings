@@ -1,5 +1,8 @@
+"""
+Same as `run_sst2_inlp_probe.py`, but now we use the INLP projection
+that was learned directly in CDA space.
+"""
 from src.sst2_inlp_probe import main
-
 
 if __name__ == "__main__":
     main(
