@@ -55,7 +55,7 @@ def main():
     out_dir = Path("outputs")
     out_dir.mkdir(exist_ok=True)
 
-    # 1. Grab a pool of sentences (same idea as in inlp.py demo)
+    # 1. Grab a pool of sentences
     print("Loading SST-2 training subset for pronoun probe ...")
     glue_train = load_dataset("glue", "sst2", split="train[:5000]")  # 5k for speed
     texts = list(glue_train["sentence"])
@@ -93,7 +93,6 @@ def main():
     )
     print("Projection P shape:", P.shape, "iters used:", info["n_iters"])
 
-    # Optionally save for later reuse
     proj_path = Path("checkpoints/inlp_projection.joblib")
     proj_path.parent.mkdir(exist_ok=True)
     save_projection(str(proj_path), P, info)
@@ -113,7 +112,6 @@ def main():
     print(f"Accuracy (projected): {metrics_proj['accuracy']:.4f}, "
           f"F1-weighted (projected): {metrics_proj['f1_weighted']:.4f}")
 
-    # 7. Save everything to JSON for the report
     results = {
         "model": "bert-base-uncased",
         "n_examples": int(len(selected_texts)),
