@@ -1,3 +1,9 @@
+"""
+This script is the main place where the INLP projection in BERT space
+is trained. End-to-end experiment for INLP on *pronoun-gender* information in
+BERT-base CLS embeddings.
+"""
+
 from pathlib import Path
 import json
 
@@ -14,7 +20,6 @@ from src.inlp import (
     save_projection,
     load_projection,
 )
-
 
 def train_and_eval_probe(X, y, random_state=0):
     """Train a simple logistic-regression gender probe and report metrics."""
