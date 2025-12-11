@@ -1,3 +1,8 @@
+"""
+Dataset loading helpers.
+Wraps HuggingFace for SST-2, CrowS-Pairs, and StereoSet into
+simple convenience functions.
+"""
 from typing import Literal, Union
 import pandas as pd
 from datasets import Dataset, DatasetDict, load_dataset
@@ -8,16 +13,6 @@ StereoSubset = Literal["intrasentence", "intersentence", "all"]
 def load_stereoset(subset: StereoSubset = "intrasentence") -> Union[Dataset, DatasetDict]:
     """
     Load the StereoSet dataset from Hugging Face.
-
-    Args:
-        subset:
-            - "intrasentence": intra-sentence context association tests
-            - "intersentence": inter-sentence/discourse level tests
-            - "all": returns a DatasetDict with both subsets
-
-    Returns:
-        Either a single Dataset (if subset != "all")
-        or a DatasetDict with keys {"intrasentence", "intersentence"}.
     """
     if subset == "all":
         ds_intra = load_dataset("McGill-NLP/stereoset", "intrasentence", split="validation")
@@ -33,14 +28,6 @@ def load_stereoset(subset: StereoSubset = "intrasentence") -> Union[Dataset, Dat
 def load_crows_pairs() -> Dataset:
     """
     Load the CrowS-Pairs dataset directly from the official GitHub CSV.
-
-    Returns:
-        A datasets.Dataset with the same fields as the original HF version:
-        - id (int)
-        - sent_more (str)
-        - sent_less (str)
-        - stereo_antistereo (str: 'stereo' or 'antistereo')
-        - bias_type (str: e.g. 'gender', 'race-color', ...)
     """
     url = "https://raw.githubusercontent.com/nyu-mll/crows-pairs/master/data/crows_pairs_anonymized.csv"
 
@@ -57,9 +44,6 @@ def load_crows_pairs() -> Dataset:
 def load_sst2() -> DatasetDict:
     """
     Load the SST-2 dataset from GLUE.
-
-    Returns:
-        A DatasetDict with splits: 'train', 'validation', 'test'.
     """
     ds = load_dataset("glue", "sst2")
     return ds
