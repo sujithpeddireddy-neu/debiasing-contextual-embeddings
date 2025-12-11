@@ -19,14 +19,7 @@ def train_sst2_baseline(
     max_eval_samples: Optional[int] = None,
 ) -> Dict[str, Any]:
     """
-    Fine-tune a BERT-base model on SST-2 and return eval metrics.
-
-    Args:
-        model_name: HF model name to use (baseline: 'bert-base-uncased').
-        output_dir: Directory for checkpoints/logs.
-        max_train_samples: If set, subsample training set for quick runs.
-        max_eval_samples: If set, subsample validation set.
-
+    Fine-tune a BERT-base model on SST-2.
     Returns:
         A dict of evaluation metrics on the SST-2 validation set.
     """
