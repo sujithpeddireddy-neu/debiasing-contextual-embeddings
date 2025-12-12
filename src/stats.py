@@ -1,3 +1,6 @@
+"""
+Script for printing the statistics of all three datasets. Required this to understand and seperate the evaluation tricks for each dataset.
+"""
 from collections import Counter
 from typing import Dict, Any
 
