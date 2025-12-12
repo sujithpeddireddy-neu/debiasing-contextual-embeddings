@@ -1,3 +1,8 @@
+"""
+Evaluate a masked language model (BERT-base-uncased) on StereoSet
+after applying Counterfactual Data Augmentation (CDA) via gender term
+swapping.
+"""
 import torch
 from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForMaskedLM
@@ -11,6 +16,7 @@ model.eval()
 
 
 def sentence_pll(sentence):
+    """Compute the pseudo-log-likelihood (PLL) of a sentence under the MLM."""
     encoding = tokenizer(sentence, return_tensors="pt", truncation=True, max_length=512)
     input_ids = encoding["input_ids"][0].to(device)
     attention = encoding["attention_mask"][0].to(device)
@@ -39,6 +45,10 @@ def sentence_pll(sentence):
 
 
 def extract_sau_cda(example):
+    """
+    Extract stereotype (S), anti-stereotype (A), and unrelated (U)
+    sentences from a StereoSet example and apply CDA via gender swapping.
+    """
     S = A = U = None
 
     for sent, label in zip(example["sentences"]["sentence"], example["sentences"]["gold_label"]):
@@ -56,6 +66,7 @@ def extract_sau_cda(example):
 
 
 def evaluate_split(dataset, max_examples=None):
+    """Evaluate a StereoSet split (intra- or intersentence) after CDA."""
     PLL_S, PLL_A, PLL_U = [], [], []
 
     for i, ex in enumerate(dataset):
