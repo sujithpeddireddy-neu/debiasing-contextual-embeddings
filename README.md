@@ -41,12 +41,6 @@ SST-2 INLP probe with CDA:
 python scripts/run_sst2_inlp_probe_cda_true.py
 ```
 
-> If that last filename is different in your repo (it was truncated in the GitHub UI), run:
-> ```bash
-> ls scripts
-> ```
-> and use the exact script name.
-
 ### Gender probe (INLP)
 INLP gender probe:
 ```bash
