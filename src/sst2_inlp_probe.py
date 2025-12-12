@@ -17,7 +17,7 @@ def get_sst2_split_embeddings(
     Load an SST-2 split and return:
       X: CLS embeddings (N, d)
       y: labels (N,)
-    We use extract_cls_embeddings from src.inlp.
+    Uses extract_cls_embeddings from src.inlp.
     """
     print(f"Loading SST-2 split: {split}")
     ds = load_dataset("glue", "sst2", split=split)
