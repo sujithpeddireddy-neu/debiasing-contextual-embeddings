@@ -1,25 +1,5 @@
 """
-inlp.py
-
 Iterative Nullspace Projection (INLP) implementation for debiasing contextual embeddings.
-
-Main functions:
-- extract_cls_embeddings(...)    : extract CLS embeddings from a HF model + dataset
-- build_pronoun_gender_dataset(...) : quick helper to create (X, y) where y is gender from pronouns
-- learn_inlp_projection(...)    : runs INLP and returns projection matrix P (d x d)
-- apply_projection(...)         : applies P to embedding array X
-- save_projection / load_projection
-
-Usage:
-  - Use extract_cls_embeddings to build X (N x d)
-  - Build labels y (N) in whichever way fits your project (we provide a pronoun helper)
-  - Call learn_inlp_projection(X, y, n_iters=10)
-  - Use P = returned projection; call apply_projection(X_new, P) before evaluation or classifier training.
-
-Notes:
-  - We use CLS token pooling by default for simplicity and stability.
-  - INLP removes *linear* directions; it depends on the quality of the labeled data.
-  - The pronoun-based label builder is a quick way to obtain strong signals for "gender" but not the only way.
 """
 
 from typing import List, Tuple, Optional, Dict, Any
@@ -44,13 +24,6 @@ def extract_cls_embeddings(
     """
     Extract CLS token embeddings from a HuggingFace Transformer model.
     Returns numpy array of shape (N, d).
-
-    Args:
-        model_name: HF model id (e.g., 'bert-base-uncased').
-        texts: list of strings (N).
-        batch_size: batch size for forward pass.
-        device: 'cpu' or 'cuda'. If None, auto-detect.
-        tokenizer_kwargs: extra kwargs for tokenizer (like truncation, max_length).
     """
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")
     tokenizer_kwargs = tokenizer_kwargs or {"truncation": True, "padding": True, "max_length": 128, "return_tensors": "pt"}
