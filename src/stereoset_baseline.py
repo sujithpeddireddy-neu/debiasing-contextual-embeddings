@@ -1,3 +1,8 @@
+"""
+Evaluate a masked language model (BERT-base-uncased) on the StereoSet benchmark
+using the official pseudo-log-likelihood scoring and ICAT, SSS, and LMS
+metrics from the original StereoSet paper.
+"""
 import math
 import torch
 from transformers import AutoTokenizer, AutoModelForMaskedLM
@@ -8,6 +13,9 @@ from statistics import mean
 StereoSubset = Literal["intrasentence", "intersentence", "all"]
 
 def load_stereoset(subset: StereoSubset = "intrasentence") -> Union[Dataset, DatasetDict]:
+    """
+    Load the StereoSet benchmark from HuggingFace datasets.
+    """
     if subset == "all":
         return DatasetDict(
             intrasentence=load_dataset("McGill-NLP/stereoset", "intrasentence", split="validation"),
