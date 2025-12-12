@@ -1,17 +1,13 @@
-# crowspairs_inlp.py 
-
 import torch
 import numpy as np
 from transformers import AutoTokenizer, AutoModel, AutoModelForMaskedLM
 from data_loading import load_crows_pairs
 
-# *** INLP ***
+# INLP
 from inlp import load_projection, apply_projection
 
 
-# ------------------------------------
 # Modified log-likelihood WITH INLP
-# ------------------------------------
 def sentence_log_likelihood_inlp(model, tokenizer, sentence, P, info):
     model.eval()
     with torch.no_grad():
@@ -30,7 +26,7 @@ def sentence_log_likelihood_inlp(model, tokenizer, sentence, P, info):
             # Get hidden state for token i  (shape: 1, seq_len, hidden_size)
             hidden = outputs.hidden_states[-1][0, i, :].cpu().numpy()  # (768,)
 
-            # *** INLP APPLY PROJECTION ***
+            # Apply projection
             hidden_proj = apply_projection(
                 hidden.reshape(1, -1),
                 P,
@@ -38,7 +34,7 @@ def sentence_log_likelihood_inlp(model, tokenizer, sentence, P, info):
                 scaler_scale=info["scaler_scale"],
             )  # shape: (1,768)
 
-            # Convert back to torch for scoring
+            # Back to torch for scoring
             hidden_proj_torch = torch.tensor(hidden_proj, dtype=torch.float32)
 
             # Replace the hidden state of token i with projected version
@@ -55,14 +51,12 @@ def sentence_log_likelihood_inlp(model, tokenizer, sentence, P, info):
         return log_likelihood
 
 
-# ------------------------------------
 # Main INLP Debiasing Evaluation
-# ------------------------------------
 def evaluate_crows_pairs_inlp(model_name="bert-base-uncased"):
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForMaskedLM.from_pretrained(model_name)
 
-    # *** INLP load projection ***
+    # INLP load projection 
     P, info = load_projection("checkpoints/inlp_projection.joblib")
 
     ds = load_crows_pairs()
