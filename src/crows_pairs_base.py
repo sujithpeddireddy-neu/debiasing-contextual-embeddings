@@ -1,8 +1,6 @@
-# crowspairs_baseline.py
-
 import torch
 from transformers import AutoTokenizer, AutoModelForMaskedLM
-from data_loading import load_crows_pairs   # uses your loader
+from data_loading import load_crows_pairs
 from typing import Dict
 
 def sentence_log_likelihood(model, tokenizer, sentence: str):
@@ -30,7 +28,7 @@ def evaluate_crows_pairs_baseline(model_name="bert-base-uncased"):
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForMaskedLM.from_pretrained(model_name)
 
-    ds = load_crows_pairs()   # your function
+    ds = load_crows_pairs()
 
     total = 0
     stereotypical_pref = 0
