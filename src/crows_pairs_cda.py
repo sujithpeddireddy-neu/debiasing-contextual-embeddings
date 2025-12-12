@@ -3,7 +3,6 @@ from transformers import AutoTokenizer, AutoModelForMaskedLM
 from data_loading import load_crows_pairs
 from cda_utils import swap_gender_terms
 
-# GPU usage
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Using device:", device)
 
@@ -67,6 +66,4 @@ def evaluate_crows_pairs_cda(model_name="bert-base-uncased"):
 
     return percent
 
-
-# RUN THE EVALUATION
 evaluate_crows_pairs_cda()
