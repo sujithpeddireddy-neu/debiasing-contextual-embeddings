@@ -16,6 +16,53 @@ source .venv/bin/activate
 # .venv\Scripts\activate
 
 pip install -r requirements.txt
+Run (from repo root)
+SST-2
+Baseline:
 
-## Run (from repo root)
+bash
+Copy code
+python scripts/run_sst2_baseline.py
+CDA baseline:
 
+bash
+Copy code
+python scripts/run_sst2_cda_baseline.py
+INLP probe on SST-2:
+
+bash
+Copy code
+python scripts/run_sst2_inlp_probe.py
+SST-2 INLP probe with CDA:
+
+bash
+Copy code
+python scripts/run_sst2_inlp_probe_cda_true.py
+# If the filename differs, run: ls scripts
+Gender probe (INLP)
+INLP gender probe:
+
+bash
+Copy code
+python scripts/run_inlp_gender_probe.py
+INLP gender probe with CDA:
+
+bash
+Copy code
+python scripts/run_inlp_gender_probe_cda.py
+StereoSet
+INLP on StereoSet:
+
+bash
+Copy code
+python scripts/run_stereoset_inlp.py
+Stats / reporting
+Compute summary stats:
+
+bash
+Copy code
+python scripts/run_compute_stats.py
+Notes
+Some scripts may download datasets/models on first run and cache them locally.
+
+If you get import errors, reinstall deps: pip install -r requirements.txt
