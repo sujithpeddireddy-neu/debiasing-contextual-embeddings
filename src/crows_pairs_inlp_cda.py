@@ -1,3 +1,6 @@
+"""
+Script for implementing inlp on CrowS-pairs dataset.
+"""
 import torch
 from transformers import AutoTokenizer, AutoModelForMaskedLM
 
